@@ -17,6 +17,8 @@ public class Main {
     static int MIN_NUMBERS_OF_SAILS = 3;
     static int MAX_NUMBERS_OF_SAILS = 1000;
 
+    static LongAdder stat = new LongAdder();
+
     public static void main(String[] args) throws Exception {
         int[] shop1 = randomIntArray();
         int[] shop2 = randomIntArray();
@@ -44,11 +46,10 @@ public class Main {
 
     private static Callable<Integer> parallelSum(int[] revenueArray) {
         return (() -> {
-            LongAdder stat = new LongAdder();
             for (int i = 0; i < revenueArray.length; i++) {
                 stat.add(revenueArray[i]);
             }
-            return (int) stat.sum();
+            return (int) stat.sumThenReset();
         });
         //return () -> stream(transactions).sum();
     }
